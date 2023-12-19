@@ -13,6 +13,5 @@ public class Restaurant {
 	@Setter(onMethod_ = @Autowired)
 	private Chef chef;
 	
-	private String name;
-	
+	private String names;
 }
