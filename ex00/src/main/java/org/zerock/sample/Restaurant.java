@@ -13,5 +13,4 @@ public class Restaurant {
 	@Setter(onMethod_ = @Autowired)
 	private Chef chef;
 	
-	private String age;
 }
