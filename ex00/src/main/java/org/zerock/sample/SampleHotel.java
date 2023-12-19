@@ -13,4 +13,8 @@ import lombok.ToString;
 public class SampleHotel {
 	
 	private final Chef chef;
+	
+	private String name;
+	
+	private String age;
 }
