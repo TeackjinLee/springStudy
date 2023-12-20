@@ -23,13 +23,13 @@ public class RootConfig {
 //		hikariConfig.setDriverClassName("com.mysql.cj.jdbc.Driver");
 //		hikariConfig.setJdbcUrl("jdbc:mysql://localhost:3306/springStudy");
 //		hikariConfig.setUsername("root");
-//		hikariConfig.setPassword("123123123");
+//		hikariConfig.setPassword("000000000");
 		
 		// log4jdbc 설정
 		hikariConfig.setDriverClassName("net.sf.log4jdbc.sql.jdbcapi.DriverSpy");
 		hikariConfig.setJdbcUrl("jdbc:log4jdbc:mysql://localhost:3306");
 		hikariConfig.setUsername("root");
-		hikariConfig.setPassword("123123123");
+		hikariConfig.setPassword("000000000");
 		
 		HikariDataSource dataSource = new HikariDataSource(hikariConfig);
 		
