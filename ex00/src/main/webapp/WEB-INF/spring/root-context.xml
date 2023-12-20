@@ -22,7 +22,7 @@
 		<property name="jdbcUrl"
 				value="jdbc:log4jdbc:mysql://localhost:3306/springStudy"></property>
 		<property name="username" value="root"></property>
-		<property name="password" value="123123123"></property>
+		<property name="password" value="000000000"></property>
 					
 	</bean>
 	
