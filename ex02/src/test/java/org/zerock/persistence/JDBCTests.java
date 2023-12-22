@@ -26,12 +26,11 @@ public class JDBCTests {
 				DriverManager.getConnection(
 						"jdbc:mysql://localhost:3306",
 						"root",
-						"000000000"
+						"123123123"
 						)) {
 			log.info(con);
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}
 	}
-	
 }
