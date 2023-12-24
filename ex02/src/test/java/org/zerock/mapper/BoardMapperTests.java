@@ -75,4 +75,5 @@ public class BoardMapperTests {
 		int count = mapper.update(board);
 		log.info("UPDATE COUNT : " + count);
 	}
+	
 }
