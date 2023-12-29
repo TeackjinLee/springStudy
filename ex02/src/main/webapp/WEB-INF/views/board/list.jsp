@@ -48,21 +48,25 @@
                             	<div class="pagination">
                             		<c:if test="${pageMaker.prev}">
                             			<li class="paginate_button previous">
-                            				<a href = "#">Previous</a>
+                            				<a href = "${pageMaker.startPage -1}">Previous</a>
                             			</li>
                             		</c:if>
                             		
                             		<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-                            			<li class="paginate_button"><a href="#">${num}</a></li>
+                            			<li class="paginate_button ${pageMaker.cri.pageNum == num ? 'active' : ''} "><a href="${num}">${num}</a></li>
                             		</c:forEach>
                             		
                             		<c:if test="${pageMaker.next}">
                             			<li class="paginate_button next">
-                            				<a href="#">Next</a>
+                            				<a href="${pageMaker.endPage + 1}">Next</a>
                             			</li>
                             		</c:if>
                             	</div>
                             </div>
+                            <form id='actionForm' action="/board/list" method='get'>
+                            	<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
+                            	<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
+                            </form>
                             <!-- Modal -->
                             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -118,6 +122,29 @@
             		$("#regBtn").on("click", function () {
 						self.location = "/board/register";
 					});
+            		
+            		/* var actionForm = $("#actionForm");
+            		$(".paginate_button a").on("click", function(e) { 
+            			e.preventDefault();
+            			console.log('click');
+            			actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+            			actionForm.submit();
+            		}); */
             	});
+            	
+            	
+           	    var actionForm = document.getElementById("actionForm");
+           	    var paginateLinks = document.querySelectorAll(".paginate_button a");
+
+           	    paginateLinks.forEach(function(link) {
+           	        link.addEventListener("click", function(e) {
+           	            e.preventDefault();
+           	            console.log('click');
+           	            actionForm.querySelector("input[name='pageNum']").value = this.getAttribute("href");
+           	            actionForm.submit();
+           	        });
+           	    });
+            	
+            	
             </script>
        <%@include file="../includes/footer.jsp" %>
