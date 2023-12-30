@@ -33,10 +33,10 @@
                                 </thead>
                                 <% int i = 0;%>
                                 <c:forEach items="${list}" var="board">
-                                	<tr onclick="location.href='/board/get?bno=<c:out value="${board.bno}"/>'" style="cursor : pointer;">
+                                	<tr>
                                 		<td><c:out value="<%=++i%>"/></td>
                                 		<td><c:out value="${board.bno}"/></td>
-                                		<td><c:out value="${board.title}"/></td>
+                                		<td><a class="move" href='<c:out value="${board.bno}"/>'><c:out value="${board.title}"/></a></td>
                                 		<td><c:out value="${board.writer}"/></td>
                                 		<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}"/></td>
                                 		<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate}"/></td>
@@ -145,6 +145,20 @@
            	        });
            	    });
             	
-            	
+           	 	var moves = document.querySelectorAll(".move");
+           	 	const input_bno = document.createElement('input');
+           	 	input_bno.type = 'hidden';
+           	 	input_bno.name = 'bno';
+           	 	
+           	 	moves.forEach(function(move) {
+           	 		console.log(move.getAttribute("href"));
+            	    move.addEventListener("click", function(e) {
+            	    	input_bno.value = move.getAttribute("href");
+            	        e.preventDefault();
+            	        actionForm.append(input_bno);
+            	        actionForm.setAttribute("action", "/board/get");
+            			actionForm.submit();        
+            	    });
+            	});
             </script>
        <%@include file="../includes/footer.jsp" %>
