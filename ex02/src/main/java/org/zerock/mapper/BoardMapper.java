@@ -30,5 +30,7 @@ public interface BoardMapper {
 	
 	// update 처리
 	public int update(BoardVO board);
-
+	
+	// 개시물 개수
+	public int getTotalCount(Criteria cri);
 }
