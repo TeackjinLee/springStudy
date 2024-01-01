@@ -18,13 +18,13 @@
 				<trim prefix="OR">
 					<choose>
 						<when test="type == 'T'.toString()">
-							title like '%'||#{keyword}||'%'
+							title like CONCAT('%',#{keyword},'%')
 						</when>
 						<when test="type == 'C'.toString()">
-							content like '%'||#{keyword}||'%'
+							content like CONCAT('%',#{keyword},'%')
 						</when>
 						<when test="type == 'W'.toString()">
-							writer like '%'||#{keyword}||'%'
+							writer like CONCAT('%',#{keyword},'%')
 						</when>
 					</choose>
 				</trim>
