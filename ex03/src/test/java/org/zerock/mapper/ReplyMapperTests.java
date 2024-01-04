@@ -48,7 +48,7 @@ public class ReplyMapperTests {
 	
 	@Test
 	public void testRead() {
-		Long targetRno = 5L;
+		Long targetRno = 36L;
 		ReplyVO vo = mapper.read(targetRno);
 		log.info(vo);
 	}
@@ -75,6 +75,13 @@ public class ReplyMapperTests {
 		// 3195150L
 		List<ReplyVO> replies = mapper.getListWithPaging(cri, bnoArr[1]);
 		
+		replies.forEach(reply -> log.info(reply));
+	}
+	
+	@Test
+	public void testList2() {
+		Criteria cri = new Criteria(2, 10);
+		List<ReplyVO> replies = mapper.getListWithPaging(cri, 3195150L);
 		replies.forEach(reply -> log.info(reply));
 	}
 }

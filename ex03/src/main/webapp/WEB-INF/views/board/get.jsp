@@ -63,13 +63,13 @@
                         </div> -->
 						<div class="panel-heading">
 							<i class="fa fa-comments fa-fw"></i> Reply
-							<button id='addReplyBtn' class="'btn btn-primary btn-xs pull-right">New Reply</button>
+							<button id='addReplyBtn' class="btn btn-primary btn-xs pull-right">New Reply</button>
 						</div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                       		<div class="chat">
+                       		<ul class="chat">
                        			<!-- start reply -->
-                       			<li class="left clearfix" data-rno='12'>
+                       			<!-- <li class="left clearfix" data-rno='12'>
                        				<div>
                        					<div class="header">
                        						<strong class="primary-font">user00</strong>
@@ -77,10 +77,13 @@
                        					</div>
                        					<div>Good job!</div>
                        				</div>
-                       			</li>
-                       		</div>
+                       			</li> -->
+                       		</ul>
                         </div>
                         <!-- /.panel-body -->
+						<div class="panel-footer">
+							
+						</div>
                     </div>
                     <!-- /.panel -->
                 </div>
@@ -113,7 +116,7 @@
 						<div class="modal-footer">
 							<button id="modalModBtn" type="button" class="btn btn-warning">Modify</button>
 							<button id="modalRemoveBtn" type="button" class="btn btn-danger">Remove</button>
-							<button id="modalRegisterBtn" type="butoon" class="btn btn-danger" data-dismiss="modal">Register</button>
+							<button id="modalRegisterBtn" type="butoon" class="btn btn-primary" data-dismiss="modal">Register</button>
 							<button id="modalCloseBtn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							<button id="modalClassBtn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>
@@ -130,7 +133,20 @@
 				showList(1);
 
 				function showList(page) {
-					replyService.getList({bno:bnoValue, page:page||1}, function(list){
+					console.log("show list " + page);
+
+					replyService.getList({bno:bnoValue, page:page||1}, function(replyCnt, list){
+
+						console.log("replyCnt : " + replyCnt);
+						console.log("list : " + list);
+						console.log(list);
+
+						if(page == -1) {
+							pageNum = Math.ceil(replyCnt/10.0);
+							showList(pageNum);
+							return;
+						}
+
 						var str = "";
 						if(list == null || list.length == 0) {
 							replyUL.innerHTML = "";
@@ -176,10 +192,57 @@
 							modal.find("input").val("");
 							modal.modal("hide");
 
+							// showList(1);
+							showList(-1);
+						});
+					});
+					
+					$(".chat").on("click", "li", function(e) {
+						var rno = $(this).data("rno");
+						console.log(rno);
+						replyService.get(rno, function(reply){
+							modalInputReply.val(reply.reply);
+							modalInputReplyer.val(reply.replyer);
+							modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly", "readonly");
+							modal.data("rno", reply.rno);
+
+							modal.find("button[id != 'modalCloseBtn']").hide();
+							modalModBtn.show();
+							modalRemoveBtn.show();
+
+							$(".modal").modal("show");
+						});
+					});
+
+					modalModBtn.on("click", function(e){
+						var reply = {rno:modal.data("rno"), reply:modalInputReply.val()};
+
+						replyService.update(reply, function(result){
+							alert(result);
+							modal.modal("hide");
 							showList(1);
 						});
-					})
+					});
+
+					modalRemoveBtn.on("click", function(e){
+						var rno = modal.data("rno");
+
+						replyService.remove(rno, function(result){
+							alert(result);
+							modal.modal("hide");
+							showList(1);
+						});
+					});
 				});
+
+				// let modal = document.querySelector('.modal');
+				// let modalInputReply = document.getElementsByName('reply')[0];
+				// let modalInputReplyer = document.getElementsByName('replyer')[0];
+				// let modalInputReplyDate = document.getElementsByName('replyDate')[0];
+
+				// let modalModBtn = document.getElementById('modalModBtn');
+				// let modalRemoveBtn = document.getElementById('modalRemoveBtn');
+				// let modalRegisterBtn = document.getElementById('modalRegisterBtn');
 
 				// let modal = document.querySelector('.modal');
 				// let modalInputReply = document.getElementsByName('reply')[0];
