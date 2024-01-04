@@ -30,7 +30,6 @@ var replyService = (function(){
 
         $.getJSON("/replies/pages/" + bno + "/" + page + ".json",
             function(data) {
-                console.log("data" + data);
                 if (callback) {
                     callback(data);
                 }
@@ -107,10 +106,10 @@ var replyService = (function(){
             return [ (hh > 9 ? '' : '0') + hh, ':', (mi > 9 ? '' : '0') + mi, ':', (ss > 9 ? '' : '0') + ss].join('');
         } else {
             var yy = dateObj.getFullYear();
-            var mi = dateObj.getMonth() + 1;
+            var mm = dateObj.getMonth() + 1;
             var dd = dateObj.getDate();
 
-            return [ yy, '/', (mm > 9 ? '' : '0') + mm, '/', (dd > 9 ? '' : '0') + dd].join('');
+            return [ yy, '/', (mm < 9 ? '' : '0') + mm, '/', (dd > 9 ? '' : '0') + dd ].join('');
         }
     }
 
