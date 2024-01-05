@@ -69,7 +69,7 @@
                         <div class="panel-body">
                        		<ul class="chat">
                        			<!-- start reply -->
-                       			<!-- <li class="left clearfix" data-rno='12'>
+                       			<li class="left clearfix" data-rno='12'>
                        				<div>
                        					<div class="header">
                        						<strong class="primary-font">user00</strong>
@@ -77,12 +77,11 @@
                        					</div>
                        					<div>Good job!</div>
                        				</div>
-                       			</li> -->
+                       			</li>
                        		</ul>
                         </div>
                         <!-- /.panel-body -->
 						<div class="panel-footer">
-							
 						</div>
                     </div>
                     <!-- /.panel -->
@@ -136,7 +135,6 @@
 					console.log("show list " + page);
 
 					replyService.getList({bno:bnoValue, page:page||1}, function(replyCnt, list){
-
 						console.log("replyCnt : " + replyCnt);
 						console.log("list : " + list);
 						console.log(list);
@@ -159,6 +157,7 @@
 							str += "<p>" + list[i].reply + "</p></div></li>";
 						}
 						replyUL.innerHTML = str;
+						showReplyPage(replyCnt);
 					});
 				}
 
@@ -220,7 +219,7 @@
 						replyService.update(reply, function(result){
 							alert(result);
 							modal.modal("hide");
-							showList(1);
+							showList(pageNum);
 						});
 					});
 
@@ -230,7 +229,7 @@
 						replyService.remove(rno, function(result){
 							alert(result);
 							modal.modal("hide");
-							showList(1);
+							showList(pageNum);
 						});
 					});
 				});
@@ -333,5 +332,59 @@
 				    operForm.submit();
 				});
 				
+				// page
+				var pageNum = 1;
+				var replyPageFooter = document.querySelector('.panel-footer');
+
+				function showReplyPage(replyCnt) {
+					var endNum = Math.ceil(pageNum/10.0) * 10;
+					var startNum = endNum -9;
+
+					var prev = startNum != 1;
+					var next = false;
+					
+					if (endNum * 10 >= replyCnt) {
+						endNum = Math.ceil(replyCnt/10.0);
+					};
+
+					if (endNum * 10 < replyCnt) {
+						next = true;
+					};
+					var str = "<ul class='pagination pull-right'>";
+					if (prev) {
+						str += "<li class='page-item'><a class='page-link' href='"+(strtNum -1) +"'>Previous</a></li>";
+					}
+
+					for (var i=startNum; i<=endNum; i++) {
+						var active = pageNum == i ? "active" : "";
+						str += "<li class='page-item " + active + " '><a class='page-link' href='" + i + "'>" + i + "</a></li>";
+					}
+
+					if(next) {
+						str += "<li class='page-item'><a class='page-link' href='" + (endNum + 1) + "'>Next</a></li>";
+					}
+
+					str += "</ul></div>"
+
+					console.log(str);
+					replyPageFooter.innerHTML = str;
+				}
+				
+				replyPageFooter.addEventListener("click", function(e){
+					console.log("click");
+					console.log(e.target);
+					console.log(e.target.tagName.toLowerCase() === "a" && e.target.parentElement.tagName.toLowerCase() === "li");
+					if (e.target.tagName.toLowerCase() === "a" && e.target.parentElement.tagName.toLowerCase() === "li") {
+						console.log("123");
+						e.preventDefault();
+						console.log("page click");
+
+						// href 속성에서 페이지 번호 가져오기
+						var targetPageNum = e.target.getAttribute('href');
+						console.log("targetPageNum : " + targetPageNum);
+						pageNum = targetPageNum;
+						showList(pageNum);
+					}
+				});
 			</script>
 <%@include file="../includes/footer.jsp" %>

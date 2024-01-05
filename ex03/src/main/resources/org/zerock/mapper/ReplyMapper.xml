@@ -34,12 +34,12 @@
 			select rno, bno, reply, replyer, replyDate, updateDate
 			from
 			(
-				select /*+INDEX(tbl_reply idx_reply) */
+				select
 				@rownum:=@rownum+1 rn, bno, rno, reply, replyer, replyDate, updateDate
 				from tbl_reply, (select @rownum:=0) TMP
 				where bno = #{bno}
 				and rno > 0
-				and @rownum <= #{cri.pageNum} * #{cri.amount}
+				and @rownum < #{cri.pageNum} * #{cri.amount}
 			) A 
 			where rn > (#{cri.pageNum} -1) * #{cri.amount};
 		]]>
