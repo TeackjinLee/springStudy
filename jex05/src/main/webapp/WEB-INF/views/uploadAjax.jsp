@@ -12,7 +12,7 @@
 	}
 	
 	.uploadResult ul {
-		disply:flex;
+		display:flex;
 		flex-flow: row;
 		justify-content: center;
 		align-items: center;
@@ -21,10 +21,40 @@
 	.uploadResult ul li {
 		list-style: none;
 		padding : 10px;
+		align-content: center;
+		text-align: center;
 	}
 	
 	.uploadResult ul li img {
 		width : 20px;
+	}
+
+	.uploadResult ul li span {
+		color:white;
+	}
+
+	.bigPictureWrapper {
+		position: absolute;
+		display: none;
+		justify-content: center;
+		align-items: center;
+		top:0%;
+		width:100%;
+		height: 100%;
+		background-color: gray;
+		z-index: 100;
+		background: rgba(255,255,255,0.5);
+	}
+
+	.bigPicture {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.bigPicture img {
+		width: 600px;
 	}
 </style>
 </head>
@@ -41,6 +71,11 @@
 	</div>
 	
 	<button id='uploadBtn'>Upload</button>
+	
+	<div class='bigPictureWrapper'>
+		<div class='bigPicture'>
+		</div>
+	</div>
 		
 	<script src="https://code.jquery.com/jquery-3.4.1.js"   
 	integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="   
@@ -133,14 +168,55 @@
 					} else {
 						// str += "<li>" + i.fileName + "</li>";
 						var fileCallPath = encodeURIComponent(i.uploadPath + "/s_" + i.uuid + "_" + i.fileName);
+						
+						var originPath = i.uploadPath + "\\" + i.uuid + "_" + i.fileName;
+						
+						originPath = originPath.replace(new RegExp(/\\/g),"/");
 
-						str += "<li><img src='/display?fileName=" + fileCallPath +"'></li>";
+						str += "<li><a href=\"javascript:showImage(\'" + originPath + "\')\"><img src='/display?fileName=" + fileCallPath +"'></a></li>";
 					}
 				});
 				
 				uploadResult.innerHTML += str;
 			}
-		    	
+		    
+			function showImage(fileCallPath) {
+				// alert(fileCallPath);
+				let bigPictureWrapper = document.querySelector('.bigPictureWrapper');
+				bigPictureWrapper.style.display = 'flex';
+				
+				let bigPicture = document.querySelector('.bigPicture');
+				bigPicture.innerHTML = "<img src='/display?fileName=" + encodeURI(fileCallPath) + "'>";
+
+				var imgElement = bigPicture.querySelector("img");
+
+				var animationOptions = {
+					width : '100%',
+					height : '100%',
+				};
+				
+				var animationHideOptions = {
+						width : '0%',
+						height : '0%',
+					};
+				
+				animateElement(imgElement, animationOptions, 1000);
+
+				bigPictureWrapper.addEventListener("click", function(e){
+					animateElement(imgElement, animationHideOptions, 1000);
+					setTimeout(() => {
+						this.style.display = "none";
+					}, 1000);
+				});
+			}
+
+			function animateElement(element, options, duration) {
+				element.style.transition = "all " + duration / 1000 + "s";
+				Object.keys(options).forEach(function (property) {
+					element.style[property] = options[property];
+				});
+			}
+			
 	</script>
 </body>
 </html>
