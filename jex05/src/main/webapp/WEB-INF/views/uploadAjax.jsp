@@ -5,12 +5,39 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<style type="text/css">
+	.uploadResult {
+		width: 100%;
+		background-color : gray;
+	}
+	
+	.uploadResult ul {
+		disply:flex;
+		flex-flow: row;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.uploadResult ul li {
+		list-style: none;
+		padding : 10px;
+	}
+	
+	.uploadResult ul li img {
+		width : 20px;
+	}
+</style>
 </head>
 <body>
 	<h1>Upload with Ajax</h1>
 	
 	<div class="uploadDiv">
 		<input type="file" name="uploadFile" multiple>
+	</div>
+	
+	<div class='uploadResult'>
+		<ul>
+		</ul>
 	</div>
 	
 	<button id='uploadBtn'>Upload</button>
@@ -34,6 +61,7 @@
 		
 	
 		    var uploadBtn = document.getElementById("uploadBtn");
+			var cloneObj = document.querySelector(".uploadDiv").cloneNode(true);
 
 		    uploadBtn.addEventListener("click", function (e) {
 		        var formData = new FormData();
@@ -62,6 +90,12 @@
 					dataType: 'json',
 					success: function(result) {
 						console.log(result);
+
+						showUploadedFile(result);
+
+						var uploadDiv = document.querySelector(".uploadDiv");
+						uploadDiv.innerHTML = cloneObj.innerHTML;
+						//
 					}
 				});	//$.ajax
 		    });
@@ -81,7 +115,31 @@
 		    	}
 		    	return true;
 		    }
-	
+
+			let uploadResult = document.querySelector(".uploadResult ul");
+
+			function showUploadedFile(uploadResultArr) {
+				let str = "";
+
+				let state = {
+					items : [...uploadResultArr]
+				};
+
+				state.items.forEach(i => {
+					console.log(i);
+					if (!i.image) {
+						str += "<li><img src='/resources/img/attach.png'>" + i.fileName + "</li>";
+					} else {
+						// str += "<li>" + i.fileName + "</li>";
+						var fileCallPath = encodeURIComponent(i.uploadPath + "/s_" + i.uuid + "_" + i.fileName);
+
+						str += "<li><img src='/display?fileName=" + fileCallPath +"'></li>";
+					}
+				});
+				
+				uploadResult.innerHTML += str;
+			}
+		    	
 	</script>
 </body>
 </html>
