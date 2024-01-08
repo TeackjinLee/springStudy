@@ -128,7 +128,8 @@
 				state.items.forEach(i => {
 					console.log(i);
 					if (!i.image) {
-						str += "<li><img src='/resources/img/attach.png'>" + i.fileName + "</li>";
+						var fileCallPath = encodeURIComponent(i.uploadPath + "/" + i.uuid + "_" + i.fileName);
+						str += "<li><a href='/download?fileName="+ fileCallPath +"'><img src='/resources/img/attach.png'>" + i.fileName + "</a></li>";
 					} else {
 						// str += "<li>" + i.fileName + "</li>";
 						var fileCallPath = encodeURIComponent(i.uploadPath + "/s_" + i.uuid + "_" + i.fileName);
