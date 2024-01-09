@@ -164,7 +164,12 @@
 					console.log(i);
 					if (!i.image) {
 						var fileCallPath = encodeURIComponent(i.uploadPath + "/" + i.uuid + "_" + i.fileName);
-						str += "<li><a href='/download?fileName="+ fileCallPath +"'><img src='/resources/img/attach.png'>" + i.fileName + "</a></li>";
+						
+						var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
+						
+						str += "<li><div><a href='/download?fileName="+ fileCallPath +"'><img src='/resources/img/attach.png'>" + i.fileName + "</a>" + 
+								"<span data-file=\'" + fileCallPath + "\' data-type='file'> X </span>" +
+								"</div></li>";
 					} else {
 						// str += "<li>" + i.fileName + "</li>";
 						var fileCallPath = encodeURIComponent(i.uploadPath + "/s_" + i.uuid + "_" + i.fileName);
@@ -173,7 +178,9 @@
 						
 						originPath = originPath.replace(new RegExp(/\\/g),"/");
 
-						str += "<li><a href=\"javascript:showImage(\'" + originPath + "\')\"><img src='/display?fileName=" + fileCallPath +"'></a></li>";
+						str += "<li><a href=\"javascript:showImage(\'" + originPath + "\')\"><img src='/display?fileName=" + fileCallPath + "' /></a>" + 
+							"<span data-file=\'" + fileCallPath + "\' data-type='file'> X </span>" +
+							"</li>";
 					}
 				});
 				
@@ -216,6 +223,29 @@
 					element.style[property] = options[property];
 				});
 			}
+
+			let uploadResultElement = document.querySelector(".uploadResult");
+			uploadResultElement.addEventListener("click", function(e){
+				console.log(e.target);
+				if(e.target.tagName.toLowerCase() === "span") {
+					var targetFile = e.target.dataset.file;
+					var type = e.target.dataset.type;
+					console.log(targetFile);
+
+					$.ajax({
+						url : '/deleteFile',
+						data : {fileName: targetFile, type: type},
+						dataType : 'text',
+						type : 'POST',
+						success : function(result) {
+							alert(result);
+			
+						}
+					});
+				}				
+
+			});
+
 			
 	</script>
 </body>
