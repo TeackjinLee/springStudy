@@ -227,11 +227,9 @@
 			let uploadResultElement = document.querySelector(".uploadResult");
 			uploadResultElement.addEventListener("click", function(e){
 				console.log(e.target);
-				if(e.target.tagName === "span") {
+				if(e.target.tagName.toLowerCase() === "span") {
 					var targetFile = e.target.dataset.file;
-        			var type = e.target.dataset.type;
-					console.log("type :" + type);
-					console.log(targetFile);
+					var type = e.target.dataset.type;
 
 					$.ajax({
 						url : '/deleteFile',
