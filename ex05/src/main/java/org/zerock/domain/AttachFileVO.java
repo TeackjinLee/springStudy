@@ -3,7 +3,7 @@ package org.zerock.domain;
 import lombok.Data;
 
 @Data
-public class AttachFileDTO {
+public class AttachFileVO {
 	
 	private String fileName;
 	private String uploadPath;
