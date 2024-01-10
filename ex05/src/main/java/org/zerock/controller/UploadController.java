@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.zerock.domain.AttachFileVO;
+import org.zerock.domain.AttachFileDTO;
 
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -164,9 +164,9 @@ public class UploadController {
 	// 21.3.1 jQuery를 이용한 첨부파일 전송
 	@PostMapping(value = "/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<AttachFileVO>> uploadAjaxPost(MultipartFile[] uploadFile) {
+	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) {
 		
-		List<AttachFileVO> list = new ArrayList();
+		List<AttachFileDTO> list = new ArrayList();
 		String uploadFolder = "/Users/itaegjin/git/file/upload";
 		
 		String uploadFolderPath = getFolder();
@@ -180,7 +180,7 @@ public class UploadController {
 		
 		for (MultipartFile multipartFile : uploadFile) {
 			
-			AttachFileVO attachDTO = new AttachFileVO();
+			AttachFileDTO attachDTO = new AttachFileDTO();
 			
 			String uploadFileName = multipartFile.getOriginalFilename();
 

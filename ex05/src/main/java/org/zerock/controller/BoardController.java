@@ -41,7 +41,14 @@ public class BoardController {
 	
 	@PostMapping("/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
-		log.info("register : " + board);
+		
+		log.info("==============================================");
+		if (board.getAttachList() != null) {
+			board.getAttachList().forEach(attach -> log.info(attach));
+		}
+		
+		log.info("==============================================");
+		
 		boardService.register(board);
 		rttr.addFlashAttribute("result", board.getBno());
 		
