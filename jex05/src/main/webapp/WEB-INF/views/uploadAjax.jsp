@@ -240,7 +240,7 @@
 						type : 'POST',
 						success : function(result) {
 							alert(result);
-			
+							targetLi.remove();
 						}
 					});
 				}				
