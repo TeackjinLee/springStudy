@@ -110,5 +110,7 @@ public class BoardController {
 		
 		return new ResponseEntity<>(boardService.getAttachList(bno), HttpStatus.OK);
 	}
+	
+
 
 }
