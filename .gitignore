@@ -13,7 +13,7 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-
+.property
 # root-context 
 .root-context.xml
 # ServletConfig
