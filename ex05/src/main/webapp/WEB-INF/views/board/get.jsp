@@ -502,11 +502,9 @@
 					if (e.target.tagName === "LI" ) {
 						console.log("view image");
 						var liObj = e;
-						console.log("file : " + e.target.dataset.file);
-						console.log("path : " + e.target.dataset.path);
-						var path = encodeURIComponent(liObj.taget.dataset.path + "/" + liObj.taget.dataset.uuid + "_" + liObj.taget.dataset.fileName);
+						var path = encodeURIComponent(liObj.dataset.path + "/" + liObj.dataset.uuid + "_" + liObj.dataset.fileName);
 
-						if (liObj.target.dataset.type) {
+						if (liObj.dataset.type) {
 							showImage(path.replace(new RegExp(/\\/g),"/"));
 						} else {
 							window.location.href = "/download?fileName=";
@@ -528,7 +526,7 @@
 						width : '100%',
 						height : '100%',
 					};
-
+					
 					var animationHideOptions = {
 							width : '0%',
 							height : '0%',
@@ -536,14 +534,19 @@
 					
 					animateElement(imgElement, animationOptions, 1000);
 
-					bigPictureWrapper.addEventListener("click", function(e){
-						animateElement(imgElement, animationHideOptions, 1000);
-						setTimeout(() => {
-							this.style.display = "none";
-						}, 1000);
-					});
+					// bigPictureWrapper.addEventListener("click", function(e){
+					// 	animateElement(imgElement, animationHideOptions, 1000);
+					// 	setTimeout(() => {
+					// 		this.style.display = "none";
+					// 	}, 1000);
+					// });
 				}
 				
-				
+				function animateElement(element, options, duration) {
+					element.style.transition = "all " + duration / 1000 + "s";
+					Object.keys(options).forEach(function (property) {
+						element.style[property] = options[property];
+					});
+				}
 			</script>
 <%@include file="../includes/footer.jsp" %>
