@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerock.domain.BoardAttachVO;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
@@ -20,10 +21,8 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class BoardServiceImpl implements BoardService {
 	
-	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
-	
-	@Setter(onMethod_ = @Autowired)
+
 	private BoardAttachMapper attachMapper;
 
 	@Override
@@ -56,14 +55,29 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	@Transactional
 	public boolean modify(BoardVO board) {
-		// TODO Auto-generated method stub
-		return mapper.update(board) == 1;
+		
+		log.info("modify........." + board);
+		
+//		attachMapper.deleteAll(board.getBno());
+		boolean modifyResult = mapper.update(board) == 1;
+		if (modifyResult && board.getAttachList() != null && board.getAttachList().size() > 0) {
+			board.getAttachList().forEach(attach -> {
+				attach.setBno(board.getBno());
+				attachMapper.insert(attach);
+			});
+		}
+		
+		return modifyResult;
 	}
 
 	@Override
 	public boolean remove(Long bno) {
 		log.info("remove......." + bno);
+		
+		attachMapper.deleteAll(bno);
+		
 		return mapper.delete(bno) == 1;
 	}
 
@@ -90,4 +104,5 @@ public class BoardServiceImpl implements BoardService {
 		log.info("get Attach list by bno " + bno);
 		return attachMapper.findByBno(bno);
 	}
+	
 }

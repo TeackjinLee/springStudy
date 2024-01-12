@@ -1,5 +1,8 @@
 package org.zerock.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +79,7 @@ public class BoardController {
 	@PostMapping("/modify")
 	public String modify(BoardVO board, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		log.info("modify : " + board);
-		
+		System.out.println("###########################1");
 		if (boardService.modify(board)) {
 			rttr.addFlashAttribute("result", "success");
 		} 
@@ -91,7 +94,14 @@ public class BoardController {
 	@PostMapping("/remove")
 	public String remove(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		log.info("remove..." + bno);
+		
+		List<BoardAttachVO> attachList = boardService.getAttachList(bno);
+		
 		if (boardService.remove(bno)) {
+			
+			// delete Attach Files
+			deleteFiles(attachList);
+			
 			rttr.addFlashAttribute("result", "success");
 		}
 //		rttr.addAttribute("pageNum", cri.getPageNum());
@@ -112,5 +122,28 @@ public class BoardController {
 	}
 	
 
-
+	private void deleteFiles(List<BoardAttachVO> attachList) {
+		
+		if(attachList == null || attachList.size() == 0) {
+			return;
+		}
+		
+		log.info("delete attach files...........................");
+		log.info(attachList);
+		
+		attachList.forEach(attach -> {
+			try {
+				Path file = Paths.get("/Users/itaegjin/git/file/upload" + attach.getUploadPath() + "/" + attach.getUuid() + "_" + attach.getFileName());
+				
+				Files.deleteIfExists(file);
+				
+				if(Files.probeContentType(file).startsWith("image")) {
+					Path thumbNail = Paths.get("/Users/itaegjin/git/file/upload" + attach.getUploadPath() + "/s_" + attach.getUuid() + "_" + attach.getFileName());
+					Files.delete(thumbNail);
+				}
+			} catch(Exception e) {
+				log.error("delete file error : " + e.getMessage());
+			}
+		});
+	}
 }

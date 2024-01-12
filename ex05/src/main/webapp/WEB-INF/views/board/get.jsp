@@ -55,76 +55,7 @@
             </div>
             <!-- /.row -->
 			
-			<div class="bigPictureWrapper">
-            	<div class='bigPicture'>
-            	</div>
-            </div>
-            <style type="text/css">
-				.uploadResult {
-					width: 100%;
-					background-color : gray;
-				}
-				
-				.uploadResult ul {
-					display:flex;
-					flex-flow: row;
-					justify-content: center;
-					align-items: center;
-				}
-				
-				.uploadResult ul li {
-					list-style: none;
-					padding : 10px;
-					align-content: center;
-					text-align: center;
-				}
-				
-				.uploadResult ul li img {
-					width : 20px;
-				}
-			
-				.uploadResult ul li span {
-					color:white;
-				}
-			
-				.bigPictureWrapper {
-					position: absolute;
-					display: none;
-					justify-content: center;
-					align-items: center;
-					top:0%;
-					width:100%;
-					height: 100%;
-					background-color: gray;
-					z-index: 100;
-					background: rgba(255,255,255,0.5);
-				}
-			
-				.bigPicture {
-					position: relative;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-				}
-			
-				.bigPicture img {
-					width: 600px;
-				}
-			</style>
-            <div class="row">
-            	<div class="col-lg-12">
-            		<div class="panel panel-default">
-            			<div class="panel-heading">Files</div>
-            			<!-- /.panel-heading -->
-            			<div class='panel-body'>
-            				<div class='uploadResult'>
-            					<ul>
-            					</ul>
-            				</div>
-            			</div>
-            		</div>
-            	</div>
-            </div>
+			<%@include file="../includes/bigPicture.jsp" %>
 			
 			<div class="row">
                 <div class="col-lg-12">
@@ -499,15 +430,18 @@
 				// 26.2.3 첨부파일 클릭시 이벤트 처리
 				let uploadResult = document.querySelector(".uploadResult");
 				uploadResult.addEventListener("click", function(e){
-					if (e.target.tagName === "LI" ) {
-						console.log("view image");
-						var liObj = e;
-						var path = encodeURIComponent(liObj.dataset.path + "/" + liObj.dataset.uuid + "_" + liObj.dataset.fileName);
-
-						if (liObj.dataset.type) {
-							showImage(path.replace(new RegExp(/\\/g),"/"));
+					var liElement = e.target.closest('li');
+					if (liElement && liElement.tagName === "LI") {
+				        var liObj = liElement;
+				        var path = liObj.dataset.path + "/" + liObj.dataset.uuid + "_" + liObj.dataset.filename;
+				        path = path.replace(/\\/g, "/");
+				        path = path.split('/').map(encodeURIComponent).join('/');
+				     	// 디코딩
+				        path = decodeURIComponent(path);
+						if (liObj.dataset.type === "true") {
+							showImage(path);
 						} else {
-							window.location.href = "/download?fileName=";
+							window.location.href = "/download?fileName=" + path;
 						}
 					}
 				});
@@ -533,13 +467,14 @@
 						};
 					
 					animateElement(imgElement, animationOptions, 1000);
-
-					// bigPictureWrapper.addEventListener("click", function(e){
-					// 	animateElement(imgElement, animationHideOptions, 1000);
-					// 	setTimeout(() => {
-					// 		this.style.display = "none";
-					// 	}, 1000);
-					// });
+					
+					// 원본 이미지 창 닫기
+					bigPictureWrapper.addEventListener("click", function(e) {
+						animateElement(imgElement, animationHideOptions, 1000);
+						setTimeout(function(){
+							bigPictureWrapper.style.display = "none";
+						}, 1000);
+					});
 				}
 				
 				function animateElement(element, options, duration) {
