@@ -270,7 +270,7 @@
 						console.log(obj);
 						if (obj.image) {
 							var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
-							str += "<li data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type='" + obj.image + "'>";
+							str += "<li data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type='" + obj.fileType + "'>";
 							str += "<div>";
 							str += "<span> " + obj.fileName + "</span>";
 							str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button>";
@@ -281,7 +281,7 @@
 
 							var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
 
-							str += "<li data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type='" + obj.image + "'>";
+							str += "<li data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type='" + obj.fileType + "'>";
 							str += "<div><span> " + obj.fileName + "</span>";
 							str += "<button type='button' data-file=\'" + fileCallPath + "\ 'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button>";
 							str += "<br><img src='/resources/img/attach.png'>";
@@ -329,10 +329,12 @@
 							$(".uploadResult ul li").each(function(i, obj) {
 								var jobj = $(obj);
 								console.dir(jobj);
+								console.log(obj);
+								
 								str += "<input type='hidden' name='attachList["+i+"].fileName' value='"+jobj.data("filename")+"'>";
 								str += "<input type='hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
-								str += "<input type='hidden' name='attachList["+i+"].uploadPath' value='"+jobj.data("uploadPath")+"'>";
-								/* str += "<input type='hidden' name='attachList["+i+"].filetype' value='"+jobj.data("filetype")+"'>"; */
+								str += "<input type='hidden' name='attachList["+i+"].uploadPath' value='"+jobj.data("uploadpath")+"'>";
+							    str += "<input type='hidden' name='attachList["+i+"].image' value='"+jobj.data("image")+"'>";
 							});
 							
 							
