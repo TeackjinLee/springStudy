@@ -329,15 +329,14 @@
 							$(".uploadResult ul li").each(function(i, obj) {
 								var jobj = $(obj);
 								console.dir(jobj);
-								console.log(jobj);
 								str += "<input type='hidden' name='attachList["+i+"].fileName' value='"+jobj.data("filename")+"'>";
 								str += "<input type='hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
 								str += "<input type='hidden' name='attachList["+i+"].uploadPath' value='"+jobj.data("uploadPath")+"'>";
+								/* str += "<input type='hidden' name='attachList["+i+"].filetype' value='"+jobj.data("filetype")+"'>"; */
 							});
-							console.log("strstr");
-							console.log(str);
 							
-							formObj.append(str).submit();	
+							
+							formObj.append(str).submit();
 						}
 						formObj.submit();
 					});
