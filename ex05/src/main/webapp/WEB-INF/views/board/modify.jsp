@@ -337,9 +337,9 @@
 							console.log("strstr");
 							console.log(str);
 							
-							/* formObj.append(str).submit();	 */		
+							formObj.append(str).submit();	
 						}
-						/* formObj.submit(); */
+						formObj.submit();
 					});
 					
 				});
