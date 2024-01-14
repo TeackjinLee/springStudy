@@ -411,7 +411,7 @@
 								str += "<img src='/display?fileName=" + fileCallPath + "' >";
 								str += "</div></li>";
 							} else {
-								var fileCallPath = encodeURIComponent(attach.uploadPath + "/s_" + attach.uuid + "_" + attach.fileName);
+								var fileCallPath = encodeURIComponent(attach.uploadPath + "/" + attach.uuid + "_" + attach.fileName);
 
 								str += "<li data-path='" + attach.uploadPath + "' data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type='" + attach.fileType + "'><div>";
 								str += "<span > " + attach.fileName + " </span><br />";

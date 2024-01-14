@@ -14,4 +14,6 @@ public interface BoardAttachMapper {
 	
 	public void deleteAll(Long bon);
 	
+	public List<BoardAttachVO> getOldFiles();
+	
 }

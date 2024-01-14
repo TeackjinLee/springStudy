@@ -55,8 +55,8 @@
 	                       			<label>Writer</label>
 	                       			<input class="form-control" name="writer" value='<c:out value="${board.writer}"/>' readonly="readonly"/>
 	                       		</div>
-	                       		<button data-oper='modify' class="btn btn-default">
-	                       				<%-- onclick="location.href='/board/modify?bno=<c:out value="${board.bno}"/>'"> --%>
+	                       		<button data-oper='modify' class="btn btn-default"
+	                       		onclick="location.href='/board/modify?bno=<c:out value="${board.bno}"/>'">
 	                       			Modify
 	                       		</button>
 	                       		<button type="submit" data-oper='remove' class="btn btn-danger">Remove</button>
@@ -154,44 +154,49 @@
 					var bno = '<c:out value="${board.bno}"/>';
 
 					fetch("/board/getAttachList?bno=" + bno)
-					.then(resource => resource.json())
-					.then(
-						function(arr) {
-							console.log(arr);
-							
-							var str = "";
-							
-							var state = {items : [...arr]};
-							
-							state.items.forEach(function(attach, i){
-								// image type
-								console.log(attach);
-								if (attach.fileType) {
-									var fileCallPath = encodeURIComponent(attach.uploadPath + "/s_" + attach.uuid + "_" + attach.fileName);
-
-									str += "<li data-path='" + attach.uploadPath + "' data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type='" + attach.fileType + "'><div>";
-									str += "<span> " + attach.fileName + "</span>";
-									str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' ";
-									str += "class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br />"
-									str += "<img src='/display?fileName=" + fileCallPath + "' >";
-									str += "</div></li>";
-								} else {
-									var fileCallPath = encodeURIComponent(attach.uploadPath + "/s_" + attach.uuid + "_" + attach.fileName);
-
-									str += "<li data-path='" + attach.uploadPath + "' data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type='" + attach.fileType + "'><div>";
-									str += "<span > " + attach.fileName + " </span><br />";
-									str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='file' ";
-									str += "class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br />"
-									str += "<img src='/resources/img/attach.png'>";
-									str += "</div></li>";
-								}
+					.then(response => response.json())
+					.then(arr => {
+						console.log(arr);
+						var str = "";
+						
+						var state = {items : [...arr]};
+						
+						console.log("sss");
+						console.log(state);
+						console.log("sfds");
+						
+						state.items.forEach(function(attach, i){
+							console.log("##############");
+							console.log(attach);
+							console.log(i);
+							// image type
+							if (attach.fileType) {
 								
-								
-								const uploadResultUl = document.querySelector(".uploadResult ul");
-								uploadResultUl.innerHTML = str;
-							});
-						}
-					)
+								var fileCallPath = encodeURIComponent(attach.uploadPath + "/s_" + attach.uuid + "_" + attach.fileName);
+
+								str += "<li data-path='" + attach.uploadPath + "' data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type='" + attach.fileType + "'><div>";
+								str += "<span> " + attach.fileName + "</span>";
+								str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' ";
+								str += "class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br />"
+								str += "<img src='/display?fileName=" + fileCallPath + "' >";
+								str += "</div></li>";
+							} else {
+								var fileCallPath = encodeURIComponent(attach.uploadPath + "/" + attach.uuid + "_" + attach.fileName);
+
+								str += "<li data-path='" + attach.uploadPath + "' data-uuid='" + attach.uuid + "' data-filename='" + attach.fileName + "' data-type='" + attach.fileType + "'><div>";
+								str += "<span > " + attach.fileName + " </span><br />";
+								str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='file' ";
+								str += "class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br />"
+								str += "<img src='/resources/img/attach.png'>";
+								str += "</div></li>";
+							}
+							
+							
+							const uploadResultUl = document.querySelector(".uploadResult ul");
+							uploadResultUl.innerHTML = str;
+						});
+					})
+            		.catch(error => console.error("Error fetching data : ", error));
 				})();
 				
 				// 28.1.2 첨부파일의 삭제 이벤트
@@ -253,6 +258,7 @@
 					});
 				});
 				
+				// 파일 추가
 				function showUploadResult(uploadResultArr) {
 					if(!uploadResultArr || uploadResultArr.length == 0) {
 						return;
@@ -267,10 +273,11 @@
 					};
 
 					state.items.forEach(obj => {
+						console.log("추가하기");
 						console.log(obj);
 						if (obj.image) {
 							var fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
-							str += "<li data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type='" + obj.fileType + "'>";
+							str += "<li data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type='" + obj.image + "'>";
 							str += "<div>";
 							str += "<span> " + obj.fileName + "</span>";
 							str += "<button type='button' data-file=\'" + fileCallPath + "\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button>";
@@ -281,7 +288,7 @@
 
 							var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
 
-							str += "<li data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type='" + obj.fileType + "'>";
+							str += "<li data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "' data-type='" + obj.image + "'>";
 							str += "<div><span> " + obj.fileName + "</span>";
 							str += "<button type='button' data-file=\'" + fileCallPath + "\ 'data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button>";
 							str += "<br><img src='/resources/img/attach.png'>";
@@ -329,12 +336,21 @@
 							$(".uploadResult ul li").each(function(i, obj) {
 								var jobj = $(obj);
 								console.dir(jobj);
-								console.log(obj);
 								
-								str += "<input type='hidden' name='attachList["+i+"].fileName' value='"+jobj.data("filename")+"'>";
-								str += "<input type='hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
-								str += "<input type='hidden' name='attachList["+i+"].uploadPath' value='"+jobj.data("uploadpath")+"'>";
-							    str += "<input type='hidden' name='attachList["+i+"].image' value='"+jobj.data("image")+"'>";
+								console.log(jobj.data("path"));
+								console.log("fileType : " + jobj.data("fileType"));
+								console.log("filetype : " + jobj.data("filetype"));
+								console.log("type : " + jobj.data("type"));
+								console.log("image : " + jobj.data("image"));
+								
+							/* 	for(var i=0; i<100000; i++){
+									console.log("ss");
+								} */
+								
+								str += "<input type='hidden' name='attachList[" + i + "].fileName' value='" + jobj.data("filename") + "'>";
+								str += "<input type='hidden' name='attachList[" + i + "].uuid' value='" + jobj.data("uuid") + "'>";
+								str += "<input type='hidden' name='attachList[" + i + "].uploadPath' value='" + jobj.data("path") + "'>";
+								str += "<input type='hidden' name='attachList[" + i + "].fileType' value='" + jobj.data("type") + "'>";
 							});
 							
 							
