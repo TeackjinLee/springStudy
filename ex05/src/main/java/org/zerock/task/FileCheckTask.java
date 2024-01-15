@@ -38,7 +38,7 @@ public class FileCheckTask {
 		
 	}
 	
-	@Scheduled(cron="0 0 2 * * *")
+	@Scheduled(cron="0 * * * * *")
 	public void checkFiles() throws Exception {
 		
 		log.warn("File Check Task run.............");
@@ -48,11 +48,11 @@ public class FileCheckTask {
 		// ready for check file in directory with database file list
 		List<Path> fileListPaths = fileList.stream()
 				.map(vo -> Paths.get("/Users/itaegjin/git/file/upload", vo.getUploadPath(), vo.getUuid() + "_" + vo.getFileName())).collect(Collectors.toList());
-		
+
 		// image file has thumnail file
 		fileList.stream().filter(vo -> vo.isFileType() == true)
 				.map(vo -> Paths.get("/Users/itaegjin/git/file/upload", vo.getUploadPath(), "s_" + vo.getUuid() + "_" + vo.getFileName())).forEach(p -> fileListPaths.add(p));
-		
+
 		log.warn("====================================================");
 		
 		fileListPaths.forEach(p -> log.warn(p));
@@ -61,11 +61,11 @@ public class FileCheckTask {
 		File targetDir = Paths.get("/Users/itaegjin/git/file/upload", getFolderYesterDay()).toFile();
 		
 		File[] removeFiles = targetDir.listFiles(file -> fileListPaths.contains(file.toPath()) == false);
-				log.warn("---------------------------------------");
-				for(File file : removeFiles) {
-					log.warn(file.getAbsolutePath());
-					file.delete();
-				}
+		log.warn("---------------------------------------");
+		for(File file : removeFiles) {
+			log.warn(file.getAbsolutePath());
+			file.delete();
+		}
 		
 	}
 	
