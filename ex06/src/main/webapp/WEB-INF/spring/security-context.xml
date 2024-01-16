@@ -5,7 +5,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/security 
 						http://www.springframework.org/schema/security/spring-security.xsd
 						http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+	<bean id="customAccessDenied" class="org.zerock.security.CustomAccessDeniedHandler"></bean>
+	<bean id="customLoginSuccess" class="org.zerock.security.CustomLoginSuccessHandler"></bean> 
 	<security:http auto-config="true" use-expressions="true">
 			
 		<security:intercept-url pattern="/sample/all" access="permitAll" />
@@ -15,9 +16,20 @@
 		<security:intercept-url pattern="/sample/admin" access="hasRole('ROLE_ADMIN')" />
 		
 		<!-- 31.2.3 접근 제한 메시지의 처리 -->
-		<security:access-denied-handler error-page="/accessError" />
+		<!-- <security:access-denied-handler error-page="/accessError" /> -->
+		<!-- 31.2.4 AccessDeniedHandler 인터페이스를 구현하는 경우 -->
+		<security:access-denied-handler ref="customAccessDenied"/>
 		
-		<security:form-login/>
+		<!-- 31.3 커스텀 로그인 페이지 -->
+		<!-- <security:form-login/> 프레임워크 자체 제공 폼 -->
+		<security:form-login login-page="/customLogin" authentication-success-handler-ref="customLoginSuccess" />
+		
+		<!-- 31.4.2 스프링 시큐리티의 CSRF 설정 -->
+		<!-- <security:csrf disabled="true" /> -->
+		
+		<!-- 31.6 로그아웃의 처리와 LogoutSuccessHandler -->
+		<security:logout logout-url="/customLogout" invalidate-session="true" />
+		
 		
 	</security:http>
 	
