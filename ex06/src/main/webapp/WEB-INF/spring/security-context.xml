@@ -25,11 +25,10 @@
 		<security:form-login login-page="/customLogin" authentication-success-handler-ref="customLoginSuccess" />
 		
 		<!-- 31.4.2 스프링 시큐리티의 CSRF 설정 -->
-		<!-- <security:csrf disabled="true" /> -->
+		<security:csrf disabled="true" />
 		
 		<!-- 31.6 로그아웃의 처리와 LogoutSuccessHandler -->
 		<security:logout logout-url="/customLogout" invalidate-session="true" />
-		
 		
 	</security:http>
 	
