@@ -34,4 +34,6 @@
 	</bean>
 	
 	<tx:annotation-driven/>
+	
+	<mybatis-spring:scan base-package="org.zerock.mapper"/>
 </beans>
