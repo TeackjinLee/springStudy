@@ -29,15 +29,17 @@
 		<security:form-login login-page="/customLogin" authentication-success-handler-ref="customLoginSuccess" />
 		
 		<!-- 31.6 로그아웃의 처리와 LogoutSuccessHandler -->
-		<security:logout logout-url="/customLogout" invalidate-session="true" />
+		<!-- <security:logout logout-url="/customLogout" invalidate-session="true" /> -->
 		
 		<!-- 31.4.2 스프링 시큐리티의 CSRF 설정 -->
 		<!-- <security:csrf disabled="true" /> -->
 		
-		<security:remember-me data-source-ref="dataSource" token-validity-seconds="604800" />
+		<security:remember-me data-source-ref="dataSource" token-validity-seconds="100" />
 		
+		<!-- 31.1.2 로그아웃 시 쿠키 삭제 -->
+		<!-- 쿠키를 삭제하는 항목을 작성 -->
+		<security:logout logout-url="/customLogout" invalidate-session="true" delete-cookies="remember-me,JSESSION_ID" />
 	</security:http>
-	
 	
 	<security:authentication-manager>
 		
