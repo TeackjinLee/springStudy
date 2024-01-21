@@ -9,10 +9,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.zerock.security.CustomLoginSuccessHandler;
+import org.zerock.security.CustomUserDetailsService;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -22,20 +24,34 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
+	// 36.5 JDBC를 이용하는 Java 설정
 	@Setter(onMethod_ = {@Autowired})
 	private DataSource dataSource;
 	
+//	@Override
+//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//		log.info("configure......................");
+//		auth.inMemoryAuthentication()
+//		.withUser("admin").password("{noop}admin").roles("ADMIN");
+//		
+//		// $2a$10$0hpNtvkBCnSwek5I747ZHOwPTZ81n2Op4pthJBIXRI4Wel7eLKZym
+//		auth.inMemoryAuthentication()
+//		.withUser("member").password("$2a$10$0hpNtvkBCnSwek5I747ZHOwPTZ81n2Op4pthJBIXRI4Wel7eLKZym").roles("MEMBER");
+//	}
 	
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		log.info("configure......................");
-		auth.inMemoryAuthentication()
-		.withUser("admin").password("{noop}admin").roles("ADMIN");
-		
-		// $2a$10$0hpNtvkBCnSwek5I747ZHOwPTZ81n2Op4pthJBIXRI4Wel7eLKZym
-		auth.inMemoryAuthentication()
-		.withUser("member").password("$2a$10$0hpNtvkBCnSwek5I747ZHOwPTZ81n2Op4pthJBIXRI4Wel7eLKZym").roles("MEMBER");
-	}
+//	@Override
+//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//		log.info("configure JDBC .........................");
+//		
+//		String queryUser = "select userid, userpw, enabled from tbl_member where userid = ? ";
+//		String queryDetails = "select userid, auth from tbl_member_auth where userid = ? ";
+//		
+//		auth.jdbcAuthentication()
+//			.dataSource(dataSource)
+//			.passwordEncoder(passwordEncoder())
+//			.usersByUsernameQuery(queryUser)
+//			.authoritiesByUsernameQuery(queryDetails);
+//	}
 	
 	@Bean	// 36.2.1 로그인 성공 처리
 	public AuthenticationSuccessHandler loginSuccessHandler() {
@@ -47,6 +63,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	// 36.6 커스텀 UserDetailsService 설정
+	@Bean
+	public UserDetailsService customUserService() {
+		return new CustomUserDetailsService();
+	}
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(customUserService())
+		.passwordEncoder(passwordEncoder());
+	}
+	
 	
 	@Override	// <security:http> 관련 설정들을 대신
 	public void configure(HttpSecurity http) throws Exception {
