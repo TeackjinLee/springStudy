@@ -2,11 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:security="http://www.springframework.org/schema/security"
-	xsi:schemaLocation="http://www.springframework.org/schema/security 
-						http://www.springframework.org/schema/security/spring-security.xsd
-						http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<bean id="customAccessDenied" class="org.zerock.security.CustomAccessDeniedHandler"></bean>
-	<bean id="customLoginSuccess" class="org.zerock.security.CustomLoginSuccessHandler"></bean>
+	<!-- <bean id="customLoginSuccess" class="org.zerock.security.CustomLoginSuccessHandler"></bean> -->
 	<!-- <bean id="customPasswordEncoder" class="org.zerock.security.CustomNoOpPasswordEncoder"></bean> -->
 	<!-- 32.2.2 BCryptPasswordEncoder 클래스를 이용한 패스워드 보호 -->
 	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
@@ -26,7 +25,7 @@
 		<security:access-denied-handler ref="customAccessDenied"/>
 		<!-- 31.3 커스텀 로그인 페이지 -->
 		<!-- <security:form-login/> 프레임워크 자체 제공 폼 -->
-		<security:form-login login-page="/customLogin" authentication-success-handler-ref="customLoginSuccess" />
+		<security:form-login login-page="/customLogin" />
 		
 		<!-- 31.6 로그아웃의 처리와 LogoutSuccessHandler -->
 		<!-- <security:logout logout-url="/customLogout" invalidate-session="true" /> -->

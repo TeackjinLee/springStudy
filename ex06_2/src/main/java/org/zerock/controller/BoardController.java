@@ -51,6 +51,7 @@ public class BoardController {
 	}
 	
 	@PostMapping("/register")
+	@PreAuthorize("isAuthenticated()")
 	public String register(BoardVO board, RedirectAttributes rttr) {
 		
 		log.info("==============================================");
@@ -67,6 +68,7 @@ public class BoardController {
 	}
 	
 	@GetMapping("/register")
+	@PreAuthorize("isAuthenticated()")
 	public void register() {
 		
 	}
