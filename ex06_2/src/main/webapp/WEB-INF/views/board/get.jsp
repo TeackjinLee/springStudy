@@ -71,7 +71,9 @@
                         </div> -->
 						<div class="panel-heading">
 							<i class="fa fa-comments fa-fw"></i> Reply
-							<button id='addReplyBtn' class="btn btn-primary btn-xs pull-right">New Reply</button>
+							<sec:authorize access="isAuthenticated()">
+								<button id='addReplyBtn' class="btn btn-primary btn-xs pull-right">New Reply</button>
+							</sec:authorize>
 						</div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
