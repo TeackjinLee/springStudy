@@ -121,11 +121,15 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button id="modalModBtn" type="button" class="btn btn-warning">Modify</button>
+							<sec:authentication property="principal" var="pinfo"/>
+							<sec:authorize access="isAuthenticated()">
+								<c:if test="${pinfo.username eq board.writer}">
+									<button id="modalModBtn" type="button" class="btn btn-warning">Modify</button>
+								</c:if>
+							</sec:authorize>
 							<button id="modalRemoveBtn" type="button" class="btn btn-danger">Remove</button>
 							<button id="modalRegisterBtn" type="butoon" class="btn btn-primary" data-dismiss="modal">Register</button>
 							<button id="modalCloseBtn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							<button id="modalClassBtn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 						</div>
 					</div>
 				</div>
@@ -133,7 +137,8 @@
 			<script type="text/javascript" src="/resources/js/reply.js"></script>
             <script type="text/javascript">
             
-            	
+	            let operForm = document.getElementById('operForm');
+	            
 				console.log("======================");
 				console.log("JS TEST");
 
@@ -329,19 +334,7 @@
 				// 	console.log(data);
 				// });
 
-				const operForm = document.getElementById('operForm');
-				const button_modify = document.getElementsByTagName('button')[2];
-				const button_list = document.getElementsByTagName('button')[3];
 				
-				button_modify.addEventListener("click", function(e) {
-				    operForm.setAttribute('action', '/board/modify');
-				    operForm.submit();
-				});
-				
-				button_list.addEventListener("click", function(e) {
-				    operForm.setAttribute('action', '/board/list');
-				    operForm.submit();
-				});
 				
 				// page
 				var pageNum = 1;
@@ -489,5 +482,22 @@
 						element.style[property] = options[property];
 					});
 				}
+				
+				let modalModBtn = document.querySelector("button[data-oper='modify']");
+
+			    if (modalModBtn) {
+			        modalModBtn.addEventListener("click", function(e) {
+			            operForm.setAttribute('action', '/board/modify');
+			            operForm.submit();
+			        });
+			    } else {
+			        console.log("test");
+			    }
+		            
+				let button_list = document.querySelector("button[data-oper='list']");
+				button_list.addEventListener("click", function(e) {
+				    operForm.setAttribute('action', '/board/list');
+				    operForm.submit();
+				});
 			</script>
 <%@include file="../includes/footer.jsp" %>
