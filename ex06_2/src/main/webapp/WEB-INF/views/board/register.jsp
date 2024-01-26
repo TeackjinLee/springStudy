@@ -226,6 +226,9 @@
 		return true;
 	}
 	
+	// 38.5.1 게시물 등록 시 첨부파일 처리
+	var csrfHeaderName = "${_csrf.headerName}";
+	var csrfTokenValue = "${_csrf.token}";
 	var inputTypeFile = document.querySelector("input[type='file']");
 
 	inputTypeFile.addEventListener("change", function(e) {
@@ -247,6 +250,9 @@
 			url : '/uploadAjaxAction',
 			processData : false,
 			contentType : false,
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+			},
 			data : formData,
 			type : 'POST',
 			dataType : 'json',
@@ -311,6 +317,9 @@
 			$.ajax({
 				url : '/deleteFile',
 				data : {fileName : targetFile, type : type},
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+				},
 				dataType : 'text',
 				type : 'POST',
 				success : function(result){
@@ -327,5 +336,6 @@
 		}
 		return element;
 	}
+	
 </script>
 <%@include file="../includes/footer.jsp" %>

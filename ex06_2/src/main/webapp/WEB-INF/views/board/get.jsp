@@ -188,14 +188,30 @@
 					var modalModBtn = $("#modalModBtn");
 					var modalRemoveBtn = $("#modalRemoveBtn");
 					var modalRegisterBtn = $("#modalRegisterBtn");
+					
+					var relyer = null;
 
+					<sec:authorize access="isAuthenticated()">
+					replyer = '<sec:authentication property="principal.username"/>';
+					</sec:authorize>
+					
+					var csrfHeaderName = "${_csrf.headerName}";
+					var csrfTokenValue = "${_csrf.token}";
+					
+					
+					
 					$("#addReplyBtn").on("click", function(e){
 						modal.find("input").val("");
+						modal.find("input[name='replyer']").val(replyer);
 						modalInputReplyDate.closest('div').hide();
 						modal.find("button[id != 'modalCloseBtn']").hide();
 
 						modalRegisterBtn.show();
 						$(".modal").modal("show");
+					});
+					
+					$(document).ajaxSend(function(e, xhr, options) {
+						xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
 					});
 
 					modalRegisterBtn.on("click", function(e){

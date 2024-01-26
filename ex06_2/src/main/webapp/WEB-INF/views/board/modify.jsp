@@ -57,12 +57,10 @@
 	                       			<label>Writer</label>
 	                       			<input class="form-control" name="writer" value='<c:out value="${board.writer}"/>' readonly="readonly"/>
 	                       		</div>
-	                       		<sec:authentication property="principal" val="pinfo"/>
-	                       		<sec:authorize>
+	                       		<sec:authentication property="principal" var="pinfo"/>
+	                       		<sec:authorize access="isAuthenticated()">
 	                       			<c:if test="${pinfo.username eq board.writer}">
-	                       				<button data-oper='modify' class="btn btn-default">
-			                       			Modify
-			                       		</button>
+	                       				<button type="submit" data-oper='modify' class="btn btn-default">Modify</button>
 			                       		<button type="submit" data-oper='remove' class="btn btn-danger">Remove</button>
 	                       			</c:if>
 	                       		</sec:authorize>
@@ -233,7 +231,8 @@
 					}
 					return true;
 				}
-				
+				var csrfHeaderName = "${_csrf.headerName}";
+				var csrfTokenValue = "${_csrf.token}";
 				var inputTypeFile = document.querySelector("input[type='file']");
 				
 				inputTypeFile.addEventListener("change", function(e){
@@ -256,6 +255,9 @@
 						contentType : false,
 						data : formData,
 						type : 'POST',
+						beforeSend : function(xhr) {
+							xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+						},
 						dataType : 'json',
 						success : function(result) {
 							console.log(result);
