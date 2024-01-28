@@ -16,7 +16,7 @@
   	<url-pattern>/</url-pattern>
   </servlet-mapping>
 
-  <display-name>Welcome to Tomcat</display-name>
+  <display-name>Welcome to Tomcat</display-name> 
   <description>
      Welcome to Tomcat
   </description>
