@@ -10,7 +10,7 @@ public class DetailController implements Controller {
 
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		ModelAndView mv = new ModelAndView("notice/detail");
+		ModelAndView mv = new ModelAndView("notice.detail");
 		
 		return mv;
 	}
