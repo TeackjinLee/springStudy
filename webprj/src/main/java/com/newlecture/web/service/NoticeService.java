@@ -25,7 +25,7 @@ public class NoticeService {
 		
 		String sql = "SELECT * FROM NOTICE_VIEW WHERE "+field+" LIKE ? AND NUM BETWEEN ? AND ?";	
 		
-		Class.forName(driver);
+		Class.forName(driver);  
 		Connection con = DriverManager.getConnection(url,uid, pwd);
 		PreparedStatement st = con.prepareStatement(sql);
 		st.setString(1, "%"+query+"%");
