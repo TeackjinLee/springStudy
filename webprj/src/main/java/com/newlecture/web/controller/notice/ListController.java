@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.Controller;
 
 import com.newlecture.web.entity.Notice;
 import com.newlecture.web.service.NoticeService;
+import com.newlecture.web.service.jdbc.JDBCNoticeService;
 
 public class ListController implements Controller {
 	
