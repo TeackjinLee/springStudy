@@ -13,10 +13,14 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.newlecture.web.entity.Notice;
 import com.newlecture.web.service.NoticeService;
 
+//@Component //@Controller, @Service, @Repository
+@Service
 public class JDBCNoticeService implements NoticeService {
 //	private String url = "jdbc:mysql://localhost:3306/springStudy";
 //	private String uid = "root";
