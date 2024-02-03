@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("/")
 public class HomeController {
 	
 //	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -18,15 +19,10 @@ public class HomeController {
 ////		mv.setViewName("/WEB-INF/view/index.jsp");
 //		return mv;
 //	}
-	@RequestMapping("/index")
+	@RequestMapping("index")
 	public String index() {
 		
 		return "root.index";
-	}
-	
-	@RequestMapping("/help")
-	public void help() {
-		System.out.println("sfds2");
 	}
 
 }
