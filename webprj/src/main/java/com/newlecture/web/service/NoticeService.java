@@ -13,7 +13,7 @@ import java.util.List;
 import com.newlecture.web.entity.Notice;
 
 public interface NoticeService {
-public List<Notice> getList(int page, String field, String query) throws ClassNotFoundException, SQLException;
+	public List<Notice> getList(int page, String field, String query) throws ClassNotFoundException, SQLException;
 	// Scalar 
 	public int getCount() throws ClassNotFoundException, SQLException;
 

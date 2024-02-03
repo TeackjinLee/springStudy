@@ -39,6 +39,12 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.11.2</version>
+		</dependency>
 	
 		<!-- Mysql8.0.31 -->
 		<dependency>
@@ -46,7 +52,6 @@
 		    <artifactId>mysql-connector-java</artifactId>
 		    <version>8.0.31</version>
 		</dependency>
-	</dependencies>
-	
-	
+		
+		</dependencies>
 </project>
