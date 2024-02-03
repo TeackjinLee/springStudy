@@ -10,14 +10,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import com.newlecture.web.entity.Notice;
 import com.newlecture.web.service.NoticeService;
 
 public class JDBCNoticeService implements NoticeService {
-	private String url = "jdbc:mysql://localhost:3306/springStudy";
-	private String uid = "root";
-	private String pwd = "123123123";
-	private String driver = "com.mysql.cj.jdbc.Driver";
+//	private String url = "jdbc:mysql://localhost:3306/springStudy";
+//	private String uid = "root";
+//	private String pwd = "123123123";
+//	private String driver = "com.mysql.cj.jdbc.Driver";
+	
+	private DataSource dataSource;
+	
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
 	
 	public List<Notice> getList(int page, String field, String query) throws ClassNotFoundException, SQLException{
 		
@@ -26,8 +34,9 @@ public class JDBCNoticeService implements NoticeService {
 		
 		String sql = "SELECT * FROM NOTICE_VIEW WHERE "+field+" LIKE ? AND NUM BETWEEN ? AND ?";	
 		
-		Class.forName(driver);  
-		Connection con = DriverManager.getConnection(url,uid, pwd);
+//		Class.forName(driver);  
+//		Connection con = DriverManager.getConnection(url,uid, pwd);
+		Connection con = dataSource.getConnection();
 		PreparedStatement st = con.prepareStatement(sql);
 		st.setString(1, "%"+query+"%");
 		st.setInt(2, start);
@@ -73,8 +82,9 @@ public class JDBCNoticeService implements NoticeService {
 		
 		String sql = "SELECT COUNT(ID) COUNT FROM NOTICE";	
 		
-		Class.forName(driver);
-		Connection con = DriverManager.getConnection(url,uid, pwd);
+//		Class.forName(driver);  
+//		Connection con = DriverManager.getConnection(url,uid, pwd);
+		Connection con = dataSource.getConnection();
 		Statement st = con.createStatement();
 		
 		ResultSet rs = st.executeQuery(sql);
@@ -103,8 +113,9 @@ public class JDBCNoticeService implements NoticeService {
 				"    files" + 
 				") VALUES (?,?,?,?)";	
 		
-		Class.forName(driver);
-		Connection con = DriverManager.getConnection(url,uid, pwd);                   
+//		Class.forName(driver);  
+//		Connection con = DriverManager.getConnection(url,uid, pwd);
+		Connection con = dataSource.getConnection();             
 		//Statement st = con.createStatement();
 		//st.ex....(sql)
 		PreparedStatement st = con.prepareStatement(sql);
@@ -136,8 +147,9 @@ public class JDBCNoticeService implements NoticeService {
 				"    FILES=?" + 
 				"WHERE ID=?";
 		
-		Class.forName(driver);
-		Connection con = DriverManager.getConnection(url,uid, pwd);                   
+//		Class.forName(driver);  
+//		Connection con = DriverManager.getConnection(url,uid, pwd);
+		Connection con = dataSource.getConnection();                 
 		//Statement st = con.createStatement();
 		//st.ex....(sql)
 		PreparedStatement st = con.prepareStatement(sql);
@@ -159,8 +171,9 @@ public class JDBCNoticeService implements NoticeService {
 		String url = "jdbc:mysql://localhost:3306/springStudy";
 		String sql = "DELETE NOTICE WHERE ID=?";
 		
-		Class.forName(driver);
-		Connection con = DriverManager.getConnection(url,uid, pwd);                  
+//		Class.forName(driver);  
+//		Connection con = DriverManager.getConnection(url,uid, pwd);
+		Connection con = dataSource.getConnection();              
 		//Statement st = con.createStatement();
 		//st.ex....(sql)
 		PreparedStatement st = con.prepareStatement(sql);		
