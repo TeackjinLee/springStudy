@@ -1,11 +1,15 @@
 package com.newlecture.web.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -20,9 +24,11 @@ public class HomeController {
 //		return mv;
 //	}
 	@RequestMapping("index")
+	@ResponseBody
 	public String index() {
 		
-		return "root.index";
+		
+		return "Hello Index";
 	}
 
 }
